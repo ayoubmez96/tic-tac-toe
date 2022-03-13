@@ -3,9 +3,9 @@ the front part (ReactJs) is in tic-tac-toe-front
 
 to run the the the backend part:
 "cd tic-tac-toe-api"
-"node ." # node && npm should be installed
+"npm run serve" # node && npm should be installed
 
 to run the the the frontend part:
 "cd tic-tac-toe-front"
 "npm install" or "yarn"
-"yarn start" or "npm start"v
+"yarn start" or "npm start"

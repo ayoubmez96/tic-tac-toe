@@ -1,0 +1,30 @@
+{
+  "name": "tic-tac-toe-api",
+  "version": "1.0.0",
+  "description": "tic tac toe api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayoubmez96/tic-tac-toe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ayoubmez96/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/ayoubmez96/tic-tac-toe#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
