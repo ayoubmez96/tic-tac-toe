@@ -1,16 +1,7 @@
 import React from 'react'
-
-type Board = {
-  0: string | null,
-  1: string | null,
-  2: string | null,
-  3: string | null,
-  4: string | null,
-  5: string | null,
-  6: string | null,
-  7: string | null,
-  8: string | null
-}
+import axios from 'axios'
+import Square from '../Square/index'
+import { BoardType } from '../../types/index'
 
 const DEFAULT_BOARD = {
   0: null,
@@ -25,7 +16,7 @@ const DEFAULT_BOARD = {
 }
 
 const Board: React.FC = () => {
-  const [squares, setSquares] = React.useState<Board>(DEFAULT_BOARD)
+  const [squares, setSquares] = React.useState<BoardType>(DEFAULT_BOARD)
 
   const calculateStatus = (winner: string | null) => {
     if (winner) return `Winner: ${winner}`
@@ -35,7 +26,7 @@ const Board: React.FC = () => {
     setSquares(DEFAULT_BOARD)
   }
 
-  let calculateWinner = (squares: any) => {
+  let calculateWinner = (squares: BoardType) => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -48,37 +39,62 @@ const Board: React.FC = () => {
     ]
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i]
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a]
+      if (squares[toKeyOfBoard(a)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(b)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(c)]) {
+        return squares[toKeyOfBoard(a)]
       }
     }
     return null
   }
 
+  let toKeyOfBoard = (index: number) => {
+    return index as keyof BoardType
+  }
+
   const winner = calculateWinner(squares)
   const status = calculateStatus(winner)
 
-  let selectSquare = (square: keyof Board) => {
-      // if there is a winner or square is occupied just return
-
-      if (winner || squares[square]) {
-        return
-      }
-
-      // make squares copy and record user move
-      const squaresCopy = {...squares}
-      squaresCopy[square] = 'X'
-
-      // pass squares with user move and return another copy with WOPR's best move and update state
-      // axios.post('http://localhost:8080/move', squaresCopy)
-      //   .then(response => setSquares(response.data));
+  let selectSquare = (square: keyof BoardType) => {
+    // if there is a winner or square is occupied just return
+    if (winner || squares[square]) {
+      return
     }
+
+    // make squares copy and record user move
+    const squaresCopy = {...squares}
+    squaresCopy[toKeyOfBoard(square)] = 'X'
+
+    // pass squares with user move and return another copy with WOPR's best move and update state
+    axios.post('http://localhost:8080/move', squaresCopy)
+      .then(response => setSquares(response.data));
+  }
+
+  let squaresIn = (items: number[]) => {
+    return (
+      items.map(item => renderSquare(item))
+    )
+  }
+
+  let renderSquare = (square: number) => {
+    return (
+      <Square squareNumber={toKeyOfBoard(square)} selectSquare={selectSquare} squares={squares} />
+    )
+  }
 
   return (
     <div>
-      <div>
-        yo this is the board
+      <div className="status">{status}</div>
+      <div className="board-row">
+        {squaresIn([0, 1, 2])}
       </div>
+      <div className="board-row">
+        {squaresIn([3, 4, 5])}
+      </div>
+      <div className="board-row">
+        {squaresIn([6, 7, 8])}
+      </div>
+      <button className="restart" onClick={restart}>
+        restart
+      </button>
     </div>
   );
 }
