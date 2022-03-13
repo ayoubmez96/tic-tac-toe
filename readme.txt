@@ -3,6 +3,7 @@ the front part (ReactJs) is in tic-tac-toe-front
 
 to run the the the backend part:
 "cd tic-tac-toe-api"
+"npm install"
 "npm run serve" # node && npm should be installed
 
 to run the the the frontend part:

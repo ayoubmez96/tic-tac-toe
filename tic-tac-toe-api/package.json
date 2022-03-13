@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ayoubmez96/tic-tac-toe#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
@@ -25,6 +26,7 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3"
   }
 }

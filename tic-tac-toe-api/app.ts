@@ -1,7 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express'
+import cors from 'cors'
 
 const app = express();
 const port = 8080;
+app.use(cors({origin: "http://localhost:3000"}))
+
+// Middleware
+app.use(express.json())
 
 app.listen(port, () => {
   console.log(`application is running on port ${port}.`);
@@ -14,16 +19,16 @@ app.post('/move', (req: Request, res: Response, next: NextFunction) => {
 })
 
 let squaresWithRobotMove = (squares: any) => {
-  var bestMove = null
+  let bestMove = null
   const asArray = Object.entries(squares)
   const signs = ["X", "O"]
   const possibleMoves = asArray.filter(([key, value]) => value === null).map(value => value[0])
   // check if there is a winning move
   for (let i = 0; i < signs.length; i++) {
     possibleMoves.map(move => {
-      var fakeSquares = { ...squares }
+      let fakeSquares = { ...squares }
       fakeSquares[move] = signs[i]
-      hasWinner = calculateWinner(fakeSquares)
+      let hasWinner = calculateWinner(fakeSquares)
       if(signs.includes(hasWinner)) {
         bestMove = move
       }
