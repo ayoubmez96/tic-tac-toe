@@ -1,6 +1,18 @@
 import express, { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 
+type BoardType = {
+  0: string | null,
+  1: string | null,
+  2: string | null,
+  3: string | null,
+  4: string | null,
+  5: string | null,
+  6: string | null,
+  7: string | null,
+  8: string | null
+}
+
 const app = express();
 const port = 8080;
 app.use(cors({origin: "http://localhost:3000"}))
@@ -18,18 +30,24 @@ app.post('/move', (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(squaresClone)
 })
 
-let squaresWithRobotMove = (squares: any) => {
+let toKeyOfBoard = (index: number) => {
+  // change type of square index from number to keyof BoardType
+  // typescript throws an error if we let do something like that squares[number]
+  return index as keyof BoardType
+}
+
+let squaresWithRobotMove = (squares: BoardType) => {
   let bestMove = null
   const asArray = Object.entries(squares)
   const signs = ["X", "O"]
-  const possibleMoves = asArray.filter(([key, value]) => value === null).map(value => value[0])
+  const possibleMoves = asArray.filter(([key, value]) => value === null).map(value => parseInt(value[0]))
   // check if there is a winning move
   for (let i = 0; i < signs.length; i++) {
     possibleMoves.map(move => {
       let fakeSquares = { ...squares }
-      fakeSquares[move] = signs[i]
+      fakeSquares[toKeyOfBoard(move)] = signs[i]
       let hasWinner = calculateWinner(fakeSquares)
-      if(signs.includes(hasWinner)) {
+      if(hasWinner && signs.includes(hasWinner)) {
         bestMove = move
       }
     })
@@ -43,15 +61,15 @@ let squaresWithRobotMove = (squares: any) => {
       bestMove = randomMove(possibleMoves)
     }
   }
-  squares[bestMove] = "O"
+  squares[toKeyOfBoard(bestMove)] = "O"
   return squares
 }
 
-let randomMove = (possibleMoves: any) => {
+let randomMove = (possibleMoves: number[]) => {
   return possibleMoves[Math.floor(Math.random()*possibleMoves.length)]
 }
 
-let calculateWinner = (squares: any) => {
+let calculateWinner = (squares: BoardType) => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -64,8 +82,8 @@ let calculateWinner = (squares: any) => {
   ]
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a]
+    if (squares[toKeyOfBoard(a)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(b)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(c)]) {
+      return squares[toKeyOfBoard(a)]
     }
   }
   return null
