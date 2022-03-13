@@ -20,7 +20,7 @@ const Board: React.FC = () => {
   const [squares, setSquares] = React.useState<BoardType>(DEFAULT_BOARD)
 
   const calculateStatus = (winner: string | null) => {
-    if (winner) return `Winner: ${winner}`
+    if (winner) return `Winner: ${winner == "X" ? "you" : "WOPR"}`
   }
 
   let restart = () => {
@@ -40,6 +40,7 @@ const Board: React.FC = () => {
     ]
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i]
+      // if values in line conbinations has the same sign then return the winner
       if (squares[toKeyOfBoard(a)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(b)] && squares[toKeyOfBoard(a)] === squares[toKeyOfBoard(c)]) {
         return squares[toKeyOfBoard(a)]
       }
@@ -48,6 +49,8 @@ const Board: React.FC = () => {
   }
 
   let toKeyOfBoard = (index: number) => {
+    // change type of square index from number to keyof BoardType
+    // typescript throws an error if we let do something like that squares[number]
     return index as keyof BoardType
   }
 
@@ -70,6 +73,7 @@ const Board: React.FC = () => {
   }
 
   let squaresIn = (items: number[]) => {
+    // return three squares
     return (
       items.map(item => renderSquare(item))
     )
