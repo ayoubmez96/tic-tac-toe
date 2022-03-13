@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Square from '../Square/index'
 import { BoardType } from '../../types/index'
+import './index.css'
 
 const DEFAULT_BOARD = {
   0: null,

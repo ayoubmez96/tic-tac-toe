@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from '../Board/index'
+import './index.css'
 
 const Game: React.FC = () => {
   return (

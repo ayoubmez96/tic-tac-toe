@@ -1,5 +1,6 @@
 import React from 'react';
 import { BoardType } from '../../types/index'
+import './index.css'
 
 interface Props {
   squares: BoardType
@@ -9,7 +10,7 @@ interface Props {
 
 const Square: React.FC<Props> = ({ squares, squareNumber, selectSquare }) => {
   return (
-    <button onClick={() => selectSquare(squareNumber)}>
+    <button className="square" onClick={() => selectSquare(squareNumber)}>
       {squares[squareNumber]}
     </button>
   );
