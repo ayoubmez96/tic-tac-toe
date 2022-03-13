@@ -1,9 +1,10 @@
 import React from 'react';
+import Game from './components/Game/index'
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      My tic tac toe app
+      <Game />
     </div>
   );
 }
