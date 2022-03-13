@@ -55,6 +55,25 @@ const Board: React.FC = () => {
     return null
   }
 
+  const winner = calculateWinner(squares)
+  const status = calculateStatus(winner)
+
+  let selectSquare = (square: keyof Board) => {
+      // if there is a winner or square is occupied just return
+
+      if (winner || squares[square]) {
+        return
+      }
+
+      // make squares copy and record user move
+      const squaresCopy = {...squares}
+      squaresCopy[square] = 'X'
+
+      // pass squares with user move and return another copy with WOPR's best move and update state
+      // axios.post('http://localhost:8080/move', squaresCopy)
+      //   .then(response => setSquares(response.data));
+    }
+
   return (
     <div>
       <div>
